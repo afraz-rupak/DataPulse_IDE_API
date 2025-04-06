@@ -35,7 +35,7 @@ def submit_csv():
         result = evaluate_submission(file, event_type)
         return jsonify(result)
 
-mode = ''
+mode = 'dev'
 if __name__ == '__main__':
     if mode == 'dev':
         app.run(debug=True)
