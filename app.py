@@ -3,6 +3,10 @@ import os
 from werkzeug.utils import secure_filename
 from evaluation import evaluate_submission
 from waitress import serve
+from dotenv import load_dotenv
+
+load_dotenv()  # Load .env variables
+
 app = Flask(__name__)
 UPLOAD_FOLDER = 'csv'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -32,12 +36,15 @@ def submit_csv():
         file.save(filepath)
         return jsonify({"message": "CSV saved successfully"}), 200
     else:
-        result = evaluate_submission(file, event_type)
+        result = evaluate_submission(file, event_type, event_code)
         return jsonify(result)
 
-mode = 'dev'
+# Set mode from environment
+mode = os.getenv("FLASK_ENV", "production").lower()
+
 if __name__ == '__main__':
-    if mode == 'dev':
+    if mode == 'dev' or mode == 'development':
         app.run(debug=True)
     else:
-        serve(app, host='0.0.0.0', port=5000, threads=2)
+        print("Running with Waitress on port 8080")
+        serve(app, host='0.0.0.0', port=8080, threads=2)

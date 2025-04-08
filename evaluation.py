@@ -7,8 +7,7 @@ import os
 API_EVENT_CODE = os.getenv("API_EVENT_CODE")
 API_SECURITY_CODE = os.getenv("API_SECURITY_CODE")
 
-def evaluate_submission(file_obj, event_type):
-    # ✅ Check file extension
+def evaluate_submission(file_obj, event_type, event_code):
     if not file_obj.filename.lower().endswith('.csv'):
         return {"error": "File type error: Only CSV files are accepted."}
 
@@ -17,12 +16,12 @@ def evaluate_submission(file_obj, event_type):
     except Exception as e:
         return {"error": f"Failed to read CSV: {str(e)}"}
 
-    # ✅ Route based on event type
+    # Route based on event type
     if event_type.lower() == "classification":
-        score = evaluate_classification(user_df, API_EVENT_CODE)
+        score = evaluate_classification(user_df, event_code)
         return {"score": score}
     elif event_type.lower() == "regression":
-        score = evaluate_regression(user_df, API_EVENT_CODE)
+        score = evaluate_regression(user_df, event_code)
         return {"score": score}
     else:
         return {"error": "Event type error"}

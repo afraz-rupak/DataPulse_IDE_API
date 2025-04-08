@@ -2,6 +2,9 @@ import pandas as pd
 from sklearn.metrics import r2_score
 import os
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Path to project folder
+
 def evaluate_regression(user_df, event_code):
     try:
         # ✅ Load the API reference CSV from the "csv" folder
